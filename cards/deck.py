@@ -2,13 +2,15 @@ from card import Card
 from rank import Rank
 from suit import Suit
 from enum import Enum
-from random import randrange
+from random import randrange, seed
 
 class Deck:
-    def __init__(self, includeJokers):
+    def __init__(self, include_jokers, seed = 0):
+        seed(seed)
+
         self.cards = []
 
-        if includeJokers:
+        if include_jokers:
             self.cards.append(Card(Suit.heart, Rank.joker))
             self.cards.append(Card(Suit.spade, Rank.joker))
 
