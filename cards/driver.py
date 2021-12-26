@@ -1,8 +1,14 @@
 from card import Card
 from suit import Suit
 from rank import Rank
+from deck import Deck
 
-c = Card(Suit.heart, Rank.jack)
-c.display()
-print(f"Suit = {c.suit}")
-print(f"Rank = {c.rank}")
+new_deck = Deck(False)
+print(f"Card count: {len(new_deck.cards)}")
+
+new_deck.shuffle()
+
+for card in new_deck.cards:
+    print(repr(card), end=";")
+
+print()

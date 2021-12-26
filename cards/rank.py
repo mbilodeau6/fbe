@@ -15,3 +15,19 @@ class Rank(enum.Enum):
     queen = 12
     king = 13
     joker = 14
+
+    def __repr__(self):
+        if self == Rank.ace:
+            return "A"
+        if self == Rank.ten:
+            return "T"
+        if self == Rank.jack:
+            return "J"
+        if self == Rank.queen:
+            return "Q"
+        if self == Rank.king:
+            return "K"
+        if self == Rank.joker:
+            return "W"
+
+        return str(self.value)
