@@ -5,8 +5,8 @@ from enum import Enum
 from random import randrange, seed
 
 class Deck:
-    def __init__(self, include_jokers, seed = 0):
-        seed(seed)
+    def __init__(self, include_jokers, seed_value = 0):
+        seed(seed_value)
 
         self.cards = []
 

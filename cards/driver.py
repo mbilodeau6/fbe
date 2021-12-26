@@ -3,7 +3,7 @@ from suit import Suit
 from rank import Rank
 from deck import Deck
 
-new_deck = Deck(False)
+new_deck = Deck(False,1)
 print(f"Card count: {len(new_deck.cards)}")
 
 new_deck.shuffle()
