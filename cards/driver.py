@@ -1,14 +1,13 @@
-from card import Card
-from suit import Suit
-from rank import Rank
-from deck import Deck
+from game import Game
 
-new_deck = Deck(False,1)
-print(f"Card count: {len(new_deck.cards)}")
+player_names = ["Michael", "Lisa"]
+new_game = Game(player_names)
 
-new_deck.shuffle()
+new_game.display_game()
 
-for card in new_deck.cards:
-    print(repr(card), end=";")
+print("Starting game: ")
+new_game.start_game()
+
+new_game.display_game()
 
 print()
