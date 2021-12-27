@@ -29,3 +29,7 @@ def test_card_repr_10():
     new_card = Card(Suit.diamond, Rank.ten)
     assert repr(new_card) == "TD"
 
+def test_card_equal():
+    card1 = Card(Suit.club, Rank.eight)
+    card2 = Card(Suit.club, Rank.eight)
+    assert card1 == card2

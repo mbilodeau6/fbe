@@ -15,8 +15,13 @@ class Card:
                 return repr(self.rank) + "R"
             
             return repr(self.rank) + "B"
-            
+
         return repr(self.rank) + repr(self.suit)
 
+    def __eq__(self, other):
+        if self is None or other is None:
+            return False
+
+        return self.suit == other.suit and self.rank == other.rank
 
 

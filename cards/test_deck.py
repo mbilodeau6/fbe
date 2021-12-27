@@ -43,3 +43,15 @@ def test_deck_without_jokers():
     assert len(new_deck.cards) == 52
 
     validate_cards(new_deck, 0)
+
+def test_deck_get_next_card():
+    new_deck = Deck(False)
+
+    assert new_deck.get_next_card() == Card(Suit.heart, Rank.ace)
+
+    for i in range(50):
+        new_deck.get_next_card()
+
+    assert new_deck.get_next_card() == Card(Suit.spade, Rank.king)
+
+    assert new_deck.get_next_card() is None

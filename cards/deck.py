@@ -31,3 +31,7 @@ class Deck:
         shuffled_deck.append(self.cards.pop(0))
 
         self.cards = shuffled_deck[:]
+
+    def get_next_card(self):
+        if len(self.cards) > 0:
+            return self.cards.pop(0)
