@@ -32,19 +32,19 @@ def validate_cards(new_deck, joker_count):
 
         assert suit_counts[suit] == expected_count, f"unexpected count for {suit}"
 
-def test_deck_with_jokers():
+def test_with_jokers():
     new_deck = Deck(True)
     assert len(new_deck.cards) == 54
 
     validate_cards(new_deck, 2)
 
-def test_deck_without_jokers():
+def test_without_jokers():
     new_deck = Deck(False)
     assert len(new_deck.cards) == 52
 
     validate_cards(new_deck, 0)
 
-def test_deck_get_next_card():
+def test_get_next_card():
     new_deck = Deck(False)
 
     assert new_deck.get_next_card() == Card(Suit.heart, Rank.ace)
