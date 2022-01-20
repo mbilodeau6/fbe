@@ -48,7 +48,7 @@ class Game:
         print()
 
         # TODO: There should be a game_state to determine state
-        if self.top_of_discard is not None:
+        if self.get_top_of_discard() is not None:
             print(f"Top of Discard: {self.get_top_of_discard()}")
             print(f"Player Turn: {self.players_in_order[self.player_turn]}")
 
