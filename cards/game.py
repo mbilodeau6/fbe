@@ -16,7 +16,7 @@ class Game:
 
         self.players_in_order = player_names[:]
         self.initialize_players(player_names)
-        self.top_of_discard = None
+        self.discards = []
 
         self.deck = Deck(True)
         self.deck.shuffle()
@@ -26,9 +26,15 @@ class Game:
             for player in self.players.values():
                 player.hand.append(self.deck.get_next_card())
 
-        self.top_of_discard = self.deck.get_next_card()
+        self.discards.append(self.deck.get_next_card())
 
         self.player_turn = randrange(0, len(self.players))
+
+    def get_top_of_discard(self):
+        if (len(self.discards) == 0):
+            return None
+
+        return self.discards[-1]
 
     def display_game(self):
         for player in self.players.values():
@@ -43,16 +49,15 @@ class Game:
 
         # TODO: There should be a game_state to determine state
         if self.top_of_discard is not None:
-            print(f"Top of Discard: {self.top_of_discard}")
+            print(f"Top of Discard: {self.get_top_of_discard()}")
             print(f"Player Turn: {self.players_in_order[self.player_turn]}")
 
     # TODO: Should use player_guid instead of name to identify player
-    # TODO: Should verify the player has the card they are discarding
     def discard_card(self, player_name, card_to_discard):
         if player_name != self.whose_turn_is_it():
            raise ValueError(f"It is not {player_name}'s turn.")
 
-        self.top_of_discard = card_to_discard
+        self.discards.append(card_to_discard)
         self.players[player_name].hand.remove(card_to_discard)
 
     # TODO: Improve logic for calling the method at the wrong time
@@ -61,3 +66,22 @@ class Game:
             return None
 
         return self.players_in_order[self.player_turn]
+
+    def draw_card(self, player_name):
+        if player_name != self.whose_turn_is_it():
+            raise ValueError(f"It is not {player_name}'s turn.")
+
+        drawn_card = self.deck.get_next_card()
+        self.players[player_name].hand.append(drawn_card)
+        return drawn_card
+
+    def draw_discard(self, player_name):
+        if player_name != self.whose_turn_is_it():
+           raise ValueError(f"It is not {player_name}'s turn.")
+
+        drawn_card = self.discards.pop()
+        self.players[player_name].hand.append(drawn_card)
+        return drawn_card
+
+    def get_player_hand(self, player_name):
+        return self.players[player_name].hand
