@@ -1,3 +1,4 @@
+from frustration_rules import FrustrationRules
 from game import Game
 
 player_names = ["Michael", "Lisa"]
@@ -48,5 +49,10 @@ while(not done):
     else:
         print("Invalid command. Please try again.")
         continue
+
+print()
+
+for key, value in new_game.players.items():
+    print(f"{key}'s score: {FrustrationRules.get_hand_value(value.hand)}")
 
 print()
