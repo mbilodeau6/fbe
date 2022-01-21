@@ -33,9 +33,9 @@ while(not done):
     command = input().lower()
 
     if command == "d":
-        print(f"Select card to discard (0-{len(new_game.get_player_hand(new_game.whose_turn_is_it()))-1})")
+        print(f"Select card to discard (0-{new_game.get_player_hand(new_game.whose_turn_is_it()).get_card_count()-1})")
         card_index = int(input())
-        new_game.discard_card(new_game.whose_turn_is_it(), new_game.get_player_hand(new_game.whose_turn_is_it())[card_index])
+        new_game.discard_card(new_game.whose_turn_is_it(), new_game.get_player_hand(new_game.whose_turn_is_it()).get_card(card_index))
     elif command == "q":
         done = True
         continue

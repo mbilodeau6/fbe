@@ -8,5 +8,5 @@ def test_name():
 def test_initialization():
     new_player = Player("Michael")
     assert new_player.score == 0
-    assert len(new_player.hand) == 0
+    assert new_player.hand.get_card_count() == 0
     assert len(new_player.melds) == 0

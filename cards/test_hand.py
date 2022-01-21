@@ -31,8 +31,22 @@ def test_get_card_out_of_range():
     with pytest.raises(IndexError):
         new_hand.get_card(3)
 
-def test_remove_card():
+def test_remove_card_at_index():
     new_hand = create_test_hand()
-    new_hand.remove_card(0)
+    new_hand.remove_card_at_index(0)
     assert new_hand.get_card_count() == 2, "Unexpected card count"
     assert new_hand.get_card(0) == Card(Suit.diamond, Rank.eight)
+
+def test_remove_card():
+    new_hand = create_test_hand()
+    new_hand.remove_card(Card(Suit.heart, Rank.king))
+    assert new_hand.get_card_count() == 2, "Unexpected card count"
+    assert new_hand.get_card(1) == Card(Suit.diamond, Rank.eight)
+
+def test_iterator():
+    new_hand = create_test_hand()
+
+    for card in new_hand:
+        last_card = card
+    
+    assert last_card == Card(Suit.heart, Rank.king)

@@ -24,7 +24,7 @@ class Game:
     def start_game(self):
         for i in range(FrustrationRules.get_card_deal_count()):
             for player in self.players.values():
-                player.hand.append(self.deck.get_next_card())
+                player.hand.add_card(self.deck.get_next_card())
 
         self.discards.append(self.deck.get_next_card())
 
@@ -58,7 +58,7 @@ class Game:
            raise ValueError(f"It is not {player_name}'s turn.")
 
         self.discards.append(card_to_discard)
-        self.players[player_name].hand.remove(card_to_discard)
+        self.players[player_name].hand.remove_card(card_to_discard)
         self.move_to_next_player()
 
     # TODO: Improve logic for calling the method at the wrong time
@@ -76,7 +76,7 @@ class Game:
             raise ValueError(f"It is not {player_name}'s turn.")
 
         drawn_card = self.deck.get_next_card()
-        self.players[player_name].hand.append(drawn_card)
+        self.players[player_name].hand.add_card(drawn_card)
         return drawn_card
 
     def draw_discard(self, player_name):
@@ -84,7 +84,7 @@ class Game:
            raise ValueError(f"It is not {player_name}'s turn.")
 
         drawn_card = self.discards.pop()
-        self.players[player_name].hand.append(drawn_card)
+        self.players[player_name].hand.add_card(drawn_card)
         return drawn_card
 
     def get_player_hand(self, player_name):
