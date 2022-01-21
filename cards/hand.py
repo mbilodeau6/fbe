@@ -1,4 +1,4 @@
-from card import Card
+from frustration_rules import FrustrationRules
 
 class Hand:
     def __init__(self):
@@ -23,10 +23,10 @@ class Hand:
         return HandIterator(self)
 
     def sort_by_rank(self):
-        self.cards.sort(key=Card.get_rank_sort_value)
+        self.cards.sort(key=FrustrationRules.get_rank_sort_value)
 
     def sort_by_suit(self):
-        self.cards.sort(key=Card.get_suit_sort_value)
+        self.cards.sort(key=FrustrationRules.get_suit_sort_value)
 
 class HandIterator:
     def __init__(self, hand):

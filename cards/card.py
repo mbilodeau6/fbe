@@ -24,32 +24,3 @@ class Card:
 
         return self.suit == other.suit and self.rank == other.rank
 
-    @staticmethod
-    def get_rank_sort_value(card):
-        if card.rank == Rank.joker:
-            result  = 10
-        elif card.rank == Rank.two:
-            result = 20
-        elif card.rank == Rank.ace:
-            result = 140
-        else:
-            result = card.rank.value * 10
-
-        result += card.suit.value
-
-        return result
-
-    @staticmethod
-    def get_suit_sort_value(card):
-        if card.rank == Rank.joker:
-            result  = card.suit.value
-        elif card.rank == Rank.two:
-            result = 10 + card.suit.value
-        elif card.rank == Rank.ace:
-            result = card.suit.value * 20 + 14
-        else:
-            result = card.suit.value * 20 + card.rank.value
-
-        return result
-
-
