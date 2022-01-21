@@ -33,8 +33,28 @@ def test_discard_card():
     player_card_count = len(new_game.players[player_name].hand)
     card_to_discard = new_game.players[player_name].hand[0]
     new_game.discard_card(player_name, card_to_discard)
-    assert new_game.discards[-1] == card_to_discard
-    assert len(new_game.players[player_name].hand) == player_card_count - 1
+    assert new_game.get_top_of_discard() == card_to_discard, "Discarded card should be on top of discard pile"
+    assert len(new_game.players[player_name].hand) == player_card_count - 1, "Card count should decrease after discard"
+    assert player_name != new_game.whose_turn_is_it(), "Play turn should change after discard"
+
+def test_all_players_get_turn():
+    player_names = ["A", "B", "C"]
+    new_game = Game(player_names)
+    new_game.start_game()
+
+    players_seen = []
+    first_player = new_game.whose_turn_is_it()
+
+    for i in range(3):
+        current_player = new_game.whose_turn_is_it()
+        players_seen.append(current_player)
+        new_game.discard_card(current_player, new_game.players[current_player].hand[0])
+    
+    assert "A" in players_seen
+    assert "B" in players_seen
+    assert "C" in players_seen
+
+    assert new_game.whose_turn_is_it() == first_player, "Should wrap to first player after all players have played."
 
 def get_other_player_name(player_name):
     other_player = "Michael"

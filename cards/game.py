@@ -59,6 +59,7 @@ class Game:
 
         self.discards.append(card_to_discard)
         self.players[player_name].hand.remove(card_to_discard)
+        self.move_to_next_player()
 
     # TODO: Improve logic for calling the method at the wrong time
     def whose_turn_is_it(self):
@@ -66,6 +67,9 @@ class Game:
             return None
 
         return self.players_in_order[self.player_turn]
+
+    def move_to_next_player(self):
+        self.player_turn = (self.player_turn + 1) % len(self.players)
 
     def draw_card(self, player_name):
         if player_name != self.whose_turn_is_it():
