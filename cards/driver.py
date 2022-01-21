@@ -12,7 +12,7 @@ done = False
 
 while(not done):
     new_game.display_game()
-    print("Draw (N)ew; Draw from (D)iscard; (Q)uit")
+    print("Draw (N)ew; Draw from (D)iscard; Sort by (R)ank; Sort by (S); (Q)uit")
     command = input().lower()
 
     if command == "n":
@@ -23,6 +23,12 @@ while(not done):
         print(f"{new_game.whose_turn_is_it()} picked up discarded {selected_card}")
     elif command == "q":
         done = True
+        continue
+    elif command == "r":
+        new_game.players[new_game.whose_turn_is_it()].hand.sort_by_rank()
+        continue
+    elif command == "s":
+        new_game.players[new_game.whose_turn_is_it()].hand.sort_by_suit()
         continue
     else:
         print("Invalid command. Please try again.")

@@ -50,3 +50,38 @@ def test_iterator():
         last_card = card
     
     assert last_card == Card(Suit.heart, Rank.king)
+
+def create_hand_to_sort():
+    new_hand = Hand()
+    new_hand.add_card(Card(Suit.club, Rank.king))
+    new_hand.add_card(Card(Suit.heart, Rank.jack))
+    new_hand.add_card(Card(Suit.diamond, Rank.eight))
+    new_hand.add_card(Card(Suit.diamond, Rank.king))
+    new_hand.add_card(Card(Suit.diamond, Rank.two))
+    new_hand.add_card(Card(Suit.heart, Rank.ace))
+    new_hand.add_card(Card(Suit.club, Rank.joker))
+
+    return new_hand
+
+def test_sort_by_rank():
+    new_hand = create_hand_to_sort()
+    new_hand.sort_by_rank()
+    assert new_hand.get_card(0) == Card(Suit.club, Rank.joker)
+    assert new_hand.get_card(1) == Card(Suit.diamond, Rank.two)
+    assert new_hand.get_card(2) == Card(Suit.diamond, Rank.eight)
+    assert new_hand.get_card(3) == Card(Suit.heart, Rank.jack)
+    assert new_hand.get_card(4) == Card(Suit.diamond, Rank.king)
+    assert new_hand.get_card(5) == Card(Suit.club, Rank.king)
+    assert new_hand.get_card(6) == Card(Suit.heart, Rank.ace)
+
+
+def test_sort_by_suit():    
+    new_hand = create_hand_to_sort()
+    new_hand.sort_by_suit()
+    assert new_hand.get_card(0) == Card(Suit.club, Rank.joker)
+    assert new_hand.get_card(1) == Card(Suit.diamond, Rank.two)
+    assert new_hand.get_card(2) == Card(Suit.heart, Rank.jack)
+    assert new_hand.get_card(3) == Card(Suit.heart, Rank.ace)
+    assert new_hand.get_card(4) == Card(Suit.diamond, Rank.eight)
+    assert new_hand.get_card(5) == Card(Suit.diamond, Rank.king)
+    assert new_hand.get_card(6) == Card(Suit.club, Rank.king)

@@ -33,3 +33,43 @@ def test_equal():
     card1 = Card(Suit.club, Rank.eight)
     card2 = Card(Suit.club, Rank.eight)
     assert card1 == card2
+
+def test_get_rank_sort_value_ace():
+    new_card = Card(Suit.heart, Rank.ace)
+    assert Card.get_rank_sort_value(new_card) == 141
+
+def test_get_rank_sort_value_joker():
+    new_card = Card(Suit.diamond, Rank.joker)
+    assert Card.get_rank_sort_value(new_card) == 12
+
+def test_get_rank_sort_value_ace():
+    new_card = Card(Suit.club, Rank.two)
+    assert Card.get_rank_sort_value(new_card) == 23
+
+def test_get_rank_sort_value_ace():
+    new_card = Card(Suit.spade, Rank.three)
+    assert Card.get_rank_sort_value(new_card) == 34
+
+def test_get_rank_sort_value_king():
+    new_card = Card(Suit.heart, Rank.king)
+    assert Card.get_rank_sort_value(new_card) == 131
+
+def test_get_suit_sort_value_ace():
+    new_card = Card(Suit.heart, Rank.ace)
+    assert Card.get_suit_sort_value(new_card) == 34
+
+def test_get_suit_sort_value_joker():
+    new_card = Card(Suit.diamond, Rank.joker)
+    assert Card.get_suit_sort_value(new_card) == 2
+
+def test_get_suit_sort_value_ace():
+    new_card = Card(Suit.club, Rank.two)
+    assert Card.get_suit_sort_value(new_card) == 13
+
+def test_get_suit_sort_value_ace():
+    new_card = Card(Suit.spade, Rank.three)
+    assert Card.get_suit_sort_value(new_card) == 83
+
+def test_get_suit_sort_value_king():
+    new_card = Card(Suit.heart, Rank.king)
+    assert Card.get_suit_sort_value(new_card) == 33

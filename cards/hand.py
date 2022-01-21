@@ -1,3 +1,5 @@
+from card import Card
+
 class Hand:
     def __init__(self):
         self.cards = []
@@ -19,6 +21,12 @@ class Hand:
 
     def __iter__(self):
         return HandIterator(self)
+
+    def sort_by_rank(self):
+        self.cards.sort(key=Card.get_rank_sort_value)
+
+    def sort_by_suit(self):
+        self.cards.sort(key=Card.get_suit_sort_value)
 
 class HandIterator:
     def __init__(self, hand):
