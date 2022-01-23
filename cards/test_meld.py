@@ -39,14 +39,49 @@ def test_satisfy_meld_first_card_as_cant_be_joker():
     assert not valid
     assert reason == "Unexpected Error: treat_first_card_as can not be a joker"
 
+def test_satisfy_meld_run_not_kind():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.diamond, Rank.jack), Card(Suit.diamond, Rank.queen), Card(Suit.heart, Rank.king)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: all cards need to be rank of")
+
+def test_satisfy_meld_kind_too_short():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.diamond, Rank.jack), Card(Suit.heart, Rank.jack)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: requires minimum of")
+
+def test_satisfy_meld_kind_with_wild():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.diamond, Rank.jack), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert valid
+
+def test_satisfy_meld_kind_all_wild1():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.diamond, Rank.joker), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.diamond, Rank.jack))
+    assert valid
+
+def test_satisfy_meld_kind_all_wild2():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.diamond, Rank.joker), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.club, Rank.two))
+    assert valid
+
+def test_satisfy_meld_long_kind():
+    new_meld = Meld(MeldType.kind, 8)
+    cards = [Card(Suit.diamond, Rank.joker), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker), Card(Suit.heart, Rank.jack), Card(Suit.club, Rank.joker), Card(Suit.club, Rank.jack), Card(Suit.spade, Rank.joker), Card(Suit.spade, Rank.jack)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.heart, Rank.jack))
+    assert valid
+
 # TODO: Complete remaining tests
 def test_satisfy_meld_valid_3_run_ace_low():
     pass
 
 def test_satisfy_meld_valid_3_run_ace_high():
-    pass
-
-def test_satisfy_meld_run_not_kind():
     pass
 
 def test_satisfy_meld_kind_not_run():
@@ -55,22 +90,10 @@ def test_satisfy_meld_kind_not_run():
 def test_satisfy_meld_run_too_short():
     pass
 
-def test_satisfy_meld_kind_too_short():
-    pass
-
 def test_satisfy_meld_run_wrong_order():
     pass
 
 def test_satisfy_meld_run_has_gap():
-    pass
-
-def test_satisfy_meld_kind_with_wild():
-    pass
-
-def test_satisfy_meld_kind_all_wild1():
-    pass
-
-def test_satisfy_meld_kind_all_wild2():
     pass
 
 def test_satisfy_meld_run_with_wild():
@@ -81,3 +104,7 @@ def test_satisfy_meld_run_all_wild1():
 
 def test_satisfy_meld_run_all_wild2():
     pass
+
+def test_satisfy_meld_long_run():
+    pass
+

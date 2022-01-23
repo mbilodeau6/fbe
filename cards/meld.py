@@ -26,6 +26,15 @@ class Meld:
         if treat_first_card_as.rank == Rank.joker:
             return (False, "Unexpected Error: treat_first_card_as can not be a joker")
 
+        if len(cards) < self.min_cards:
+            return (False, f"Invalid Meld: requires minimum of {self.min_cards} cards")
+
+        if self.type == MeldType.kind:
+            wrong_rank_found = False
+            for card in cards:
+                if card.rank != Rank.joker and card.rank != Rank.two and card.rank != treat_first_card_as.rank:
+                    return (False, f"Invalid Meld: all cards need to be rank of {treat_first_card_as.rank}")
+
         return (True, "")
 
     def add_card_to_meld(self, card, add_to_end = False):
