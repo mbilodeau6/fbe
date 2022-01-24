@@ -45,6 +45,9 @@ class Meld:
             first_card = True
             last_card_value = -1
             for card in cards:
+                if last_card_value > Rank.king.value and card.rank != Rank.ace:
+                    return (False, f"Invalid Meld: ace is the highest card in a valid run")
+
                 if not FrustrationRules.is_wild(card) and card.suit != treat_first_card_as.suit:
                     return (False, f"Invalid Meld: all cards need to be suit of {treat_first_card_as.suit}")
 

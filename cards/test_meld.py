@@ -102,7 +102,7 @@ def test_satisfy_meld_run_but_mixed_suit():
     assert not valid
     assert reason.startswith("Invalid Meld: all cards need to be suit of") 
 
-def test_satisfy_meld_run_but_gap():
+def test_satisfy_meld_run_has_gap():
     new_meld = Meld(MeldType.run, 3)
     cards = [Card(Suit.heart, Rank.ten), Card(Suit.diamond, Rank.two), Card(Suit.heart, Rank.king)]
     valid, reason = new_meld.satisfy_meld(cards, cards[0])
@@ -130,25 +130,43 @@ def test_satisfy_meld_run_first_card_wrong():
     assert not valid
     assert reason.startswith("Unexpected Error: first card doesn't match treat_as_first_card")
 
-# TODO: Complete remaining tests
 def test_satisfy_meld_run_too_short():
-    pass
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.three), Card(Suit.heart, Rank.four)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: requires minimum of")
 
 def test_satisfy_meld_run_wrong_order():
-    pass
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.three), Card(Suit.heart, Rank.five), Card(Suit.heart, Rank.four)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: the cards are not a run")
 
-def test_satisfy_meld_run_has_gap():
-    pass
+def test_satisfy_meld_run_all_wild_six_start():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.spade, Rank.six))
+    assert valid
 
-def test_satisfy_meld_run_with_wild():
-    pass
+def test_satisfy_meld_run_all_wild_king_start():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.spade, Rank.king))
+    # Not valid because it is only possible to have a run of 2 if the start is king
+    assert not valid
+    assert reason.startswith("Invalid Meld: ace is the highest card in a valid run")
 
-def test_satisfy_meld_run_all_wild1():
-    pass
-
-def test_satisfy_meld_run_all_wild2():
-    pass
+def test_satisfy_meld_run_all_wild_two_start():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.two), Card(Suit.heart, Rank.joker)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.spade, Rank.two))
+    assert valid
 
 def test_satisfy_meld_long_run():
-    pass
+    new_meld = Meld(MeldType.run, 10)
+    cards = [Card(Suit.heart, Rank.three), Card(Suit.heart, Rank.four), Card(Suit.heart, Rank.joker), Card(Suit.heart, Rank.six), Card(Suit.heart, Rank.seven), Card(Suit.heart, Rank.eight), Card(Suit.heart, Rank.nine), Card(Suit.heart, Rank.ten), Card(Suit.heart, Rank.jack), Card(Suit.heart, Rank.queen)]
+    valid, reason = new_meld.satisfy_meld(cards, Card(Suit.heart, Rank.three))
+    assert valid
 
