@@ -2,6 +2,7 @@ from deck import Deck
 from player import Player
 from frustration_rules import FrustrationRules
 from random import randrange, seed
+from game_state import GameState
 
 class Game:
     def initialize_players(self, player_names):
@@ -18,6 +19,7 @@ class Game:
         self.initialize_players(player_names)
         self.discards = []
 
+        self.game_state = GameState.initializing
         self.deck = Deck(True)
         self.deck.shuffle()
 
@@ -29,6 +31,10 @@ class Game:
         self.discards.append(self.deck.get_next_card())
 
         self.player_turn = randrange(0, len(self.players))
+        self.game_state = GameState.start_round
+
+    def get_current_state(self):
+        return self.game_state
 
     def get_top_of_discard(self):
         if (len(self.discards) == 0):
@@ -48,7 +54,7 @@ class Game:
         print()
 
         # TODO: There should be a game_state to determine state
-        if self.get_top_of_discard() is not None:
+        if self.game_state != GameState.initializing and self.game_state != GameState.end_game:
             print(f"Top of Discard: {self.get_top_of_discard()}")
             print(f"Player Turn: {self.players_in_order[self.player_turn]}")
 
@@ -89,3 +95,11 @@ class Game:
 
     def get_player_hand(self, player_name):
         return self.players[player_name].hand
+
+    def has_player_used_all_cards(self):
+        if self.game_state == GameState.start_round:
+            for player in self.players.values():
+                if player.hand.get_card_count() == 0:
+                    return True
+
+        return False

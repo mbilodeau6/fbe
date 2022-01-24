@@ -2,6 +2,7 @@ from _pytest.python_api import raises
 import pytest
 from game import Game
 from card import Card
+from game_state import GameState
 
 def create_2_person_game():
     player_names = ["Michael", "Jason"]
@@ -12,6 +13,7 @@ def test_initialize_2_players():
     assert len(new_game.players) == 2
     assert "Michael" in new_game.players
     assert "Jason" in new_game.players
+    assert new_game.get_current_state() == GameState.initializing
 
 def test_initialize_empty_players():
     player_names = []
@@ -22,6 +24,11 @@ def test_initialize_1_player():
     player_names = ["Michael"]
     with pytest.raises(ValueError):
         new_game = Game(player_names)
+
+def test_start_game():
+    new_game = create_2_person_game()
+    new_game.start_game()
+    assert new_game.get_current_state() == GameState.start_round
 
 def test_discard_card():
     new_game = create_2_person_game()
@@ -132,3 +139,19 @@ def test_get_player_hand():
     player_name, other_player = start_and_get_players(new_game)
     assert new_game.get_player_hand(player_name).get_card_count() == 13, f"Unexpected card count for {player_name}"
     assert new_game.get_player_hand(other_player).get_card_count() == 13, f"Unexpected card count for {other_player}"
+
+def test_has_player_used_all_cards_true(mocker):
+    new_game = create_2_person_game()
+    player_name, other_player = start_and_get_players(new_game)
+
+    def mock_get_card_count(self):
+        return 0
+
+    mocker.patch('hand.Hand.get_card_count', mock_get_card_count)
+
+    assert new_game.has_player_used_all_cards()
+
+def test_has_player_used_all_cards_false():
+    new_game = create_2_person_game()
+    player_name, other_player = start_and_get_players(new_game)
+    assert not new_game.has_player_used_all_cards()
