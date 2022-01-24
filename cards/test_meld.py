@@ -20,6 +20,12 @@ def test_get_card_count_empty():
     new_meld = Meld(MeldType.kind)
     assert new_meld.get_card_count() == 0
 
+def test_satisfy_meld_empty_cards():
+    new_meld = Meld(MeldType.kind, 1)
+    valid, reason = new_meld.satisfy_meld([], Card(Suit.diamond, Rank.three))
+    assert not valid
+    assert reason == "Unexpected Error: a meld can not be empty"
+
 def test_satisfy_meld_valid_3_kind():
     new_meld = Meld(MeldType.kind, 3)
     cards = [Card(Suit.diamond, Rank.jack), Card(Suit.diamond, Rank.jack), Card(Suit.heart, Rank.jack)]
@@ -34,7 +40,7 @@ def test_satisfy_meld_valid_3_run():
 
 def test_satisfy_meld_first_card_as_cant_be_joker():
     new_meld = Meld(MeldType.run, 3)
-    cards = []
+    cards = [Card(Suit.diamond, Rank.four)]
     valid, reason = new_meld.satisfy_meld(cards, Card(Suit.heart, Rank.joker))
     assert not valid
     assert reason == "Unexpected Error: treat_first_card_as can not be a joker"
@@ -77,16 +83,54 @@ def test_satisfy_meld_long_kind():
     valid, reason = new_meld.satisfy_meld(cards, Card(Suit.heart, Rank.jack))
     assert valid
 
-# TODO: Complete remaining tests
 def test_satisfy_meld_valid_3_run_ace_low():
-    pass
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.diamond, Rank.ace), Card(Suit.heart, Rank.two), Card(Suit.diamond, Rank.three)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert valid
 
 def test_satisfy_meld_valid_3_run_ace_high():
-    pass
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.diamond, Rank.queen), Card(Suit.diamond, Rank.king), Card(Suit.diamond, Rank.ace)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert valid
 
-def test_satisfy_meld_kind_not_run():
-    pass
+def test_satisfy_meld_run_but_mixed_suit():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.diamond, Rank.jack), Card(Suit.heart, Rank.queen), Card(Suit.heart, Rank.king)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: all cards need to be suit of") 
 
+def test_satisfy_meld_run_but_gap():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.ten), Card(Suit.diamond, Rank.two), Card(Suit.heart, Rank.king)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: the cards are not a run")
+
+def test_satisfy_meld_run_but_reversed():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.ten), Card(Suit.heart, Rank.nine), Card(Suit.heart, Rank.eight)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[0])
+    assert not valid
+    assert reason.startswith("Invalid Meld: the cards are not a run")
+
+def test_satisfy_meld_kind_first_card_wrong():
+    new_meld = Meld(MeldType.kind, 3)
+    cards = [Card(Suit.heart, Rank.ten), Card(Suit.heart, Rank.ten), Card(Suit.diamond, Rank.ten)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[2])
+    assert not valid
+    assert reason.startswith("Unexpected Error: first card doesn't match treat_as_first_card")
+
+def test_satisfy_meld_run_first_card_wrong():
+    new_meld = Meld(MeldType.run, 3)
+    cards = [Card(Suit.heart, Rank.three), Card(Suit.heart, Rank.four), Card(Suit.heart, Rank.five)]
+    valid, reason = new_meld.satisfy_meld(cards, cards[1])
+    assert not valid
+    assert reason.startswith("Unexpected Error: first card doesn't match treat_as_first_card")
+
+# TODO: Complete remaining tests
 def test_satisfy_meld_run_too_short():
     pass
 

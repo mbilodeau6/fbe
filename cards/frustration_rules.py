@@ -59,4 +59,8 @@ class FrustrationRules:
 
         return result
 
+    @staticmethod
+    def is_wild(card):
+        return (card.rank == Rank.joker or card.rank == Rank.two)
+
 

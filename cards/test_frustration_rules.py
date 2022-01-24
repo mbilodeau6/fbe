@@ -113,3 +113,16 @@ def test_get_suit_sort_value_ace():
 def test_get_suit_sort_value_king():
     new_card = Card(Suit.heart, Rank.king)
     assert FrustrationRules.get_suit_sort_value(new_card) == 33
+
+def test_is_wild_two():
+    new_card = Card(Suit.spade, Rank.two)
+    assert FrustrationRules.is_wild(new_card)
+
+def test_is_wild_joker():
+    new_card = Card(Suit.club, Rank.joker)
+    assert FrustrationRules.is_wild(new_card)
+
+def test_is_wild_seven():
+    new_card = Card(Suit.spade, Rank.seven)
+    assert not FrustrationRules.is_wild(new_card)
+
