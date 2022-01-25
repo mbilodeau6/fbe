@@ -155,3 +155,63 @@ def test_has_player_used_all_cards_false():
     new_game = create_2_person_game()
     player_name, other_player = start_and_get_players(new_game)
     assert not new_game.has_player_used_all_cards()
+
+def test_get_winner_before_game_won():
+    new_game = create_2_person_game()
+    player_name, other_player = start_and_get_players(new_game)
+    assert len(new_game.get_winner()) == 0
+
+def test_get_winner_on_level(mocker):
+    new_game = create_2_person_game()
+    player_name, other_player = start_and_get_players(new_game)
+
+    def mock_get_level(self):
+        if self.name == "Jason":
+            return 13
+        else:
+            return 12
+
+    mocker.patch('player.Player.get_level', mock_get_level)
+
+    assert len(new_game.get_winner()) == 1
+    assert "Jason" in new_game.get_winner()
+
+def test_get_winner_on_score(mocker):
+    new_game = create_2_person_game()
+    player_name, other_player = start_and_get_players(new_game)
+
+    def mock_get_level(self):
+        return 13
+
+    def mock_get_score(self):
+        if self.name == "Jason":
+            return 200
+        else:
+            return 100
+
+    mocker.patch('player.Player.get_level', mock_get_level)
+    mocker.patch('player.Player.get_score', mock_get_score)
+
+    assert len(new_game.get_winner()) == 1
+    assert "Michael" in new_game.get_winner()
+
+def test_get_winner_multiple_winners(mocker):
+    player_names = ["Michael", "Jason", "Jeff", "Mary"]
+    new_game = Game(player_names)
+    player_name, other_player = start_and_get_players(new_game)
+
+    def mock_get_level(self):
+        return 13
+
+    def mock_get_score(self):
+        if self.name == "Jason" or self.name == "Michael":
+            return 200
+        else:
+            return 100
+
+    mocker.patch('player.Player.get_level', mock_get_level)
+    mocker.patch('player.Player.get_score', mock_get_score)
+
+    assert len(new_game.get_winner()) == 2
+    assert "Jeff" in new_game.get_winner()
+    assert "Mary" in new_game.get_winner()

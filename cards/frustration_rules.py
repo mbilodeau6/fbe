@@ -3,6 +3,7 @@ from rank import Rank
 from suit import Suit
 
 CARD_DEAL_COUNT = 13
+MAXIMUM_LEVEL = 13  # Highest playable is 12. 13 means player passed level 12.
 
 class FrustrationRules:
     @staticmethod

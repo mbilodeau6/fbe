@@ -1,6 +1,6 @@
 from deck import Deck
 from player import Player
-from frustration_rules import FrustrationRules
+from frustration_rules import MAXIMUM_LEVEL, FrustrationRules
 from random import randrange, seed
 from game_state import GameState
 
@@ -103,3 +103,18 @@ class Game:
                     return True
 
         return False
+
+    def get_winner(self):
+        winners = []
+        lowest_score = 9000
+
+        for player in self.players.values():
+            if player.get_level() == MAXIMUM_LEVEL:
+                if player.get_score() < lowest_score:
+                    winners.clear()
+                    lowest_score = player.get_score()
+
+                if player.get_score() <= lowest_score:
+                    winners.append(player.name)
+                    
+        return winners
