@@ -31,7 +31,6 @@ class Game:
         self.discards.append(self.deck.get_next_card())
 
         self.player_turn = randrange(0, len(self.players))
-        self.game_state = GameState.start_round
 
     def get_current_state(self):
         return self.game_state
@@ -97,7 +96,7 @@ class Game:
         return self.players[player_name].hand
 
     def has_player_used_all_cards(self):
-        if self.game_state == GameState.start_round:
+        if self.get_current_state() == GameState.start_round:
             for player in self.players.values():
                 if player.hand.get_card_count() == 0:
                     return True
@@ -116,5 +115,18 @@ class Game:
 
                 if player.get_score() <= lowest_score:
                     winners.append(player.name)
-                    
+
         return winners
+
+    def game_loop(self):
+        if self.game_state == GameState.initializing:
+            self.start_game()
+            self.game_state = GameState.start_round
+        elif self.game_state == GameState.start_round:
+            pass
+        elif self.game_state == GameState.end_round:
+            pass
+        elif self.game_state == GameState.end_game:
+            pass
+        else:
+            raise(NotImplemented, 'Unsupported game state hit')

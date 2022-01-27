@@ -1,5 +1,7 @@
+from unittest.mock import PropertyMock
 from _pytest.python_api import raises
 import pytest
+from frustration_rules import CARD_DEAL_COUNT
 from game import Game
 from card import Card
 from game_state import GameState
@@ -28,7 +30,8 @@ def test_initialize_1_player():
 def test_start_game():
     new_game = create_2_person_game()
     new_game.start_game()
-    assert new_game.get_current_state() == GameState.start_round
+    assert new_game.players["Michael"].hand.get_card_count() == CARD_DEAL_COUNT
+    assert new_game.players["Jason"].hand.get_card_count() == CARD_DEAL_COUNT
 
 def test_discard_card():
     new_game = create_2_person_game()
@@ -137,8 +140,8 @@ def test_draw_discard():
 def test_get_player_hand():
     new_game = create_2_person_game()
     player_name, other_player = start_and_get_players(new_game)
-    assert new_game.get_player_hand(player_name).get_card_count() == 13, f"Unexpected card count for {player_name}"
-    assert new_game.get_player_hand(other_player).get_card_count() == 13, f"Unexpected card count for {other_player}"
+    assert new_game.get_player_hand(player_name).get_card_count() == CARD_DEAL_COUNT, f"Unexpected card count for {player_name}"
+    assert new_game.get_player_hand(other_player).get_card_count() == CARD_DEAL_COUNT, f"Unexpected card count for {other_player}"
 
 def test_has_player_used_all_cards_true(mocker):
     new_game = create_2_person_game()
@@ -149,7 +152,14 @@ def test_has_player_used_all_cards_true(mocker):
 
     mocker.patch('hand.Hand.get_card_count', mock_get_card_count)
 
+    def mock_get_current_state(self):
+        return GameState.start_round
+
+    mocker.patch('game.Game.get_current_state', mock_get_current_state)
+    
     assert new_game.has_player_used_all_cards()
+
+    # with mocker.patch('game.Game.get_current_state', new_callable=PropertyMock, return_value=True) as mock_get_current_state:
 
 def test_has_player_used_all_cards_false():
     new_game = create_2_person_game()
