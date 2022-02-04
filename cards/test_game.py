@@ -225,3 +225,27 @@ def test_get_winner_multiple_winners(mocker):
     assert len(new_game.get_winner()) == 2
     assert "Jeff" in new_game.get_winner()
     assert "Mary" in new_game.get_winner()
+
+def test_game_loop_initializing_to_start_round():
+    player_names = ["Michael", "Jason", "Jeff", "Mary"]
+    new_game = Game(player_names)
+
+    assert new_game.get_current_state() == GameState.initializing
+
+    new_game.game_loop()
+
+    assert new_game.get_current_state() == GameState.start_round
+
+def test_game_loop_stay_in_start_round():
+    new_game = create_2_person_game()
+    new_game.game_loop()
+
+    assert new_game.get_current_state() == GameState.start_round
+
+    player_name = new_game.whose_turn_is_it()
+    new_card = new_game.draw_card(player_name)
+    new_game.discard_card(player_name, new_card)
+
+    new_game.game_loop()
+
+    assert new_game.get_current_state() == GameState.start_round
