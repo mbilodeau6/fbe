@@ -119,14 +119,21 @@ class Game:
         return winners
 
     def game_loop(self):
-        if self.game_state == GameState.initializing:
+        if self.get_current_state() == GameState.initializing:
             self.start_game()
             self.game_state = GameState.start_round
-        elif self.game_state == GameState.start_round:
-            pass
-        elif self.game_state == GameState.end_round:
-            pass
-        elif self.game_state == GameState.end_game:
+        elif self.get_current_state() == GameState.start_round:
+            # TODO: We need to accept user input here
+            if self.has_player_used_all_cards():
+                self.game_state = GameState.end_round
+        elif self.get_current_state() == GameState.end_round:
+            if len(self.get_winner()) != 0:
+                # TODO: Announce winner here or in the end_game step?
+                self.game_state = GameState.end_game
+            else:
+                # TODO: Need to shuffle and deal
+                self.game_state = GameState.start_round
+        elif self.get_current_state() == GameState.end_game:
             pass
         else:
             raise(NotImplemented, 'Unsupported game state hit')

@@ -249,3 +249,18 @@ def test_game_loop_stay_in_start_round():
     new_game.game_loop()
 
     assert new_game.get_current_state() == GameState.start_round
+
+def test_game_loop_start_round_to_end_round(mocker):
+    new_game = create_2_person_game()
+    new_game.game_loop()
+
+    assert new_game.get_current_state() == GameState.start_round
+
+    def mock_has_player_used_all_cards(self):
+        return True
+    
+    mocker.patch('game.Game.has_player_used_all_cards', mock_has_player_used_all_cards)
+
+    new_game.game_loop()
+
+    assert new_game.get_current_state() == GameState.end_round
